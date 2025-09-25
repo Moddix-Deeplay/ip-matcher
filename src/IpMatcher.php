@@ -47,17 +47,19 @@ class IpMatcher
         return false;
     }
 
-    public function addSubnet($subnet): void
+    public function addSubnet($subnet): bool
     {
         $subnet = Factory::parseRangeString($subnet);
         if (is_null($subnet)) {
-            return;
+            return false;
         }
 
         $first = ip2long($subnet->getStartAddress()->toString());
         $last = ip2long($subnet->getEndAddress()->toString());
 
         $this->subnets[] = [$first, $last, $subnet->toString()];
+
+        return true;
     }
 
     public function getSubnets(): array
